@@ -4,10 +4,10 @@ This component is meant to be started on the waken computer
 
 ## Commands over web socket
 
-Only this kind 
+Only this kind of messages will be parsed
 
     {
-        "command":"commandKey",
+        "command":"command",
         "args":"arguments as json payload"
     }
 

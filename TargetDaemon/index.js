@@ -1,5 +1,6 @@
 var config = require('./config.json');
 var url = config.server_ws_endpoint;
+var commander = require('./commander');
 
 require('getmac').getMac(function (err, macAddress) {
     if (err) {
@@ -23,6 +24,7 @@ var connect = function (macAddress) {
     socket.on('event', function (data) {
         console.log('event');
         console.log(data);
+        handleMessage(data);
     });
 
     socket.on('disconnect', function () {
@@ -30,3 +32,24 @@ var connect = function (macAddress) {
     });
 
 };
+
+var handleMessage = function (data) {
+    // assume message is formatted as described in README
+    if (data.command) {
+
+        var args = null;
+
+        if (data.args) {
+            try {
+                args = JSON.parse(data.args);
+            } catch (e) {
+                console.log('Cannot parse arguments payload, wont use any arguments');
+            }
+        }
+
+        commander.run(data.command, args);
+    }
+};
+
+// Uncomment for testing
+// handleMessage({command: 'IDE', args: ''});
