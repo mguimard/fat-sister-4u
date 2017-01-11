@@ -35,6 +35,8 @@ const connect = function (macAddress) {
 };
 
 const handleMessage = function (data) {
+    console.log('Handle message');
+    console.log(data);
     // assume message is formatted as described in README
     if (data.command && typeof data.command === 'string') {
         commander.run(data);
