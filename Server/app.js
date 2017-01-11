@@ -2,7 +2,6 @@
  * Created by kelto on 11/01/17.
  */
 let http = require('http');
-let wol = require('node-wol');
 let socketio = require('socket.io');
 let user = require('./lib/user.js');
 
@@ -24,6 +23,7 @@ io.sockets.on('connection', function(socket) {
 });
 
 let slaveServer = http.createServer();
+slaveServer.listen(9000);
 let slaveIo = socketio.listen(slaveServer);
 
 slaveIo.on('connection', function (socket) {

@@ -1,7 +1,7 @@
 /**
  * Created by kelto on 11/01/17.
  */
-
+let wol = require('node-wol');
 const MAC_FOR_USER = require('./user.json');
 let client_for_mac = {};
 let slave_for_client = {};
@@ -49,15 +49,24 @@ const authUser = function(socket, auth) {
 const mapSlave = function(socket) {
     socket.on('auth', function (data) {
         let mac = data.mac;
+        console.log("Slave connected with mac: " + mac);
         let client = client_for_mac[mac];
         slave_for_client[client] = socket;
+        client.emit('boot', {'status': 'Ok'});
+    });
+
+    socket.on('disconnect', function() {
+        console.log('Slave disconnected');
+        let client = client_for_mac[socket];
+        client.emit('shutdown', 'Slave disconnected');
+        client.disconnect();
     });
 };
 
 const sendCommand = function(socket, command) {
     let slave = slave_for_client[socket];
     if(!slave) {
-        socket.emit('error', 'Could not find slave socket')
+        socket.emit('error', 'Could not find slave socket');
     } else {
         slave.emit('event', command);
     }

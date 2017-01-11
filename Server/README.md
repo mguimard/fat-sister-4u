@@ -12,3 +12,5 @@ Two listening port:
 
 The client to first connect, must send an auth message. On success the corresponding computer will be started.
 On failure, the socket will be disconnected
+
+## Message handling
