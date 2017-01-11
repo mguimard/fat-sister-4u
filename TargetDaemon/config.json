@@ -2,6 +2,6 @@
   "server_ws_endpoint": "http://192.168.1.12:9000",
   "commands": {
     "IDE": "subl",
-    "HALT": ""
+    "HALT": "/sbin/shutdown"
   }
 }

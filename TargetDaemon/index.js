@@ -52,4 +52,5 @@ var handleMessage = function (data) {
 };
 
 // Uncomment for testing
-// handleMessage({command: 'IDE', args: ''});
+//handleMessage({command: 'IDE', args: ''});
+//handleMessage({command: 'HALT', args: ''});
