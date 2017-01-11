@@ -43,10 +43,10 @@ const mapSlave = function(socket) {
 
         let mac = data.mac;
         console.log("Slave connected with mac: " + mac);
-
         let client = repo.map_slave(mac, socket);
+        socket.emit('command', {command: 'IDE'});
         if(!client) {
-            console.info('Client not connected ... nothing to do')
+            console.info('Client not connected ... nothing to do');
         } else {
             client.emit('boot', {'status': 'Ok'});
         }
@@ -55,7 +55,7 @@ const mapSlave = function(socket) {
     socket.on('disconnect', () => {
         console.log('Slave disconnected');
         let client = repo.get_client_of(socket);
-        if(client) {
+        if(client !== undefined && client !== 'undefined' ) {
             client.emit('shutdown', 'Slave disconnected');
             client.disconnect();
         }
