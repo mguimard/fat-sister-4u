@@ -29,7 +29,7 @@ io.sockets.on('connection', (socket) => {
         }
     });
 
-    socket.on('event', function(data) {
+    socket.on('command', function(data) {
         user.sendCommand(socket, data);
     });
 });
