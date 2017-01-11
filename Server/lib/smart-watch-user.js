@@ -3,6 +3,7 @@
  */
 let wol = require('node-wol');
 const MAC_FOR_USER = require('./user.json');
+
 let client_for_mac = {};
 let slave_for_client = {};
 
@@ -32,8 +33,8 @@ function disconnect(socket, error) {
 }
 
 const authUser = function(socket, auth) {
+    
     let id = auth.id;
-
     let password = auth.password;
 
     if(check_auth(id, password)) {
@@ -52,8 +53,7 @@ const mapSlave = function(socket) {
         console.log("Slave connected with mac: " + mac);
         let client = client_for_mac[mac];
         slave_for_client[client] = socket;
-        //client.emit('boot', {'status': 'Ok'});
-        socket.emit('event', {command: 'IDE', args: "['ls', '/home']"})
+        client.emit('boot', {'status': 'Ok'});
     });
 
     socket.on('disconnect', function() {
@@ -77,3 +77,4 @@ exports.authUser = authUser;
 exports.mapSlave= mapSlave;
 exports.sendCommand = sendCommand;
     
+

@@ -1,4 +1,4 @@
-'use strict';
+    'use strict';
 
 const config = require('./config.json');
 const url = config.server_ws_endpoint;

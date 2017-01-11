@@ -3,18 +3,30 @@
  */
 let http = require('http');
 let socketio = require('socket.io');
-let user = require('./lib/user.js');
+let user = require('./lib/smart-watch-user.js');
 
-let wakerServer = http.createServer();
-wakerServer.listen(3000);
+let smartWatchServer = http.createServer();
+smartWatchServer.listen(3000);
 
-let io = socketio.listen(wakerServer);
+let io = socketio.listen(smartWatchServer);
 
-io.sockets.on('connection', function(socket) {
-    console.log("New connection received.");
+io.sockets.on('connection', (socket) => {
+
+    console.log('The smart watch is now connected t the socket.');
 
     socket.on('auth', function (auth) {
-        user.authUser(auth);
+
+        console.log('Smart watch trying to auth');
+        let authObj;
+
+        try {
+            authObj = JSON.parse(auth);
+            user.authUser(socket, authObj);
+        } catch (e){
+            console.error(e);
+            console.error("Could not parse auth data");
+            console.error(auth);
+        }
     });
 
     socket.on('event', function(data) {
