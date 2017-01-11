@@ -9,11 +9,25 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 public class MainActivity extends AppCompatActivity {
+    private Socket mSocket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        try {
+            mSocket = IO.socket("http://192.168.1.15:3000").connect();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -24,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                attemptSend();
             }
         });
     }
@@ -48,5 +63,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void attemptSend() {
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        Auth auth = new Auth("1", "password");
+        try {
+            String json = ow.writeValueAsString(auth);
+            mSocket.emit("auth", json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
