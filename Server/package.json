@@ -1,0 +1,15 @@
+{
+  "name": "fat-sister-server",
+  "version": "1.0.0",
+  "description": "Main server to wake any pc",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "node-wol": "^0.1.1"
+  }
+}
