@@ -17,6 +17,7 @@ function wake(mac) {
 }
 
 function auth_failure(socket, error) {
+    console.log('auth failure');
     socket.emit('auth', error);
     socket.disconnect();
 }
