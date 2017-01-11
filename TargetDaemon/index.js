@@ -16,6 +16,7 @@ var connect = function (macAddress) {
     var socket = require('socket.io-client')(url);
 
     socket.on('connect', function () {
+        socket.emit('auth', {mac: macAddress});
         console.log('connected');
     });
 
