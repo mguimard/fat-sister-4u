@@ -1,7 +1,7 @@
 {
   "server_ws_endpoint": "http://192.168.1.15:9000",
   "commands": {
-    "IDE": "subl",
+    "IDE": "/usr/bin/gedit",
     "WEB": "/usr/bin/google-chrome",
     "TERMINAL": "/usr/bin/x-terminal-emulator",
     "HALT": "/sbin/shutdown",

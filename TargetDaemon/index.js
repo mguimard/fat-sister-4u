@@ -1,44 +1,40 @@
 'use strict';
 
-var config = require('./config.json');
-var url = config.server_ws_endpoint;
-var commander = require('./commander');
+const config = require('./config.json');
+const url = config.server_ws_endpoint;
+let commander = require('./commander');
 
-console.log('Available commands');
-console.log(Object.keys(config.commands));
 
-require('getmac').getMac(function (err, macAddress) {
+require('getmac').getMac((err, macAddress) => {
     if (err) {
         throw err;
     }
     connect(macAddress);
 });
 
-var connect = function (macAddress) {
+const connect = function (macAddress) {
 
     console.log('Connecting to ' + url);
     console.log('Our mac address : ' + macAddress);
+    console.log('Available commands');
+    console.log(Object.keys(config.commands));
 
     var socket = require('socket.io-client')(url);
 
     socket.on('connect', function () {
+        console.log('Connected to server');
         socket.emit('auth', {mac: macAddress});
-        console.log('connected');
     });
 
-    socket.on('command', function (data) {
-        console.log('event');
-        console.log(data);
-        handleMessage(data);
-    });
+    socket.on('command', handleMessage);
 
     socket.on('disconnect', function () {
-        console.log('disconnected');
+        console.log('Disconnected from server');
     });
 
 };
 
-var handleMessage = function (data) {
+const handleMessage = function (data) {
     // assume message is formatted as described in README
     if (data.command && typeof data.command === 'string') {
         commander.run(data);
