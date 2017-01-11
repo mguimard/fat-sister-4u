@@ -32,7 +32,7 @@ function disconnect(socket, error) {
     socket.disconnect();
 }
 
-const authUser = function(socket, auth) {
+function authUser(socket, auth) {
     
     let id = auth.id;
     let password = auth.password;
@@ -45,27 +45,31 @@ const authUser = function(socket, auth) {
     } else {
         disconnect(socket, 'Bad Credential');
     }
-};
+}
 
-const mapSlave = function(socket) {
-    socket.on('auth', function (data) {
+function mapSlave(socket) {
+
+    socket.on('auth', (data) => {
+
         let mac = data.mac;
         console.log("Slave connected with mac: " + mac);
+
         let client = client_for_mac[mac];
         slave_for_client[client] = socket;
         client.emit('boot', {'status': 'Ok'});
     });
 
-    socket.on('disconnect', function() {
+    socket.on('disconnect', () => {
         console.log('Slave disconnected');
         let client = client_for_mac[socket];
         client.emit('shutdown', 'Slave disconnected');
         client.disconnect();
     });
-};
+}
 
-const sendCommand = function(socket, command) {
+const sendCommand = (socket, command) => {
     let slave = slave_for_client[socket];
+
     if(!slave) {
         socket.emit('error', 'Could not find slave socket');
     } else {
@@ -73,8 +77,10 @@ const sendCommand = function(socket, command) {
     }
 };
 
-exports.authUser = authUser;
-exports.mapSlave= mapSlave;
-exports.sendCommand = sendCommand;
+module.exports = {
+    authUser,
+    mapSlave,
+    sendCommand
+};
     
 
