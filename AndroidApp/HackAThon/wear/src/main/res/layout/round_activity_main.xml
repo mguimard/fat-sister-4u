@@ -15,4 +15,12 @@
         android:layout_below="@+id/launchCommandButton"
         android:layout_alignStart="@+id/launchCommandButton" />
 
+    <Button
+        android:text="Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:layout_below="@+id/speechTextView"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

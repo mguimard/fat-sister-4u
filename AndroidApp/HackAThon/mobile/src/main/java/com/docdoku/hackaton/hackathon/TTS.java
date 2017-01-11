@@ -21,6 +21,7 @@ public class TTS {
         t = new TextToSpeech(context, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
+                System.out.println("onInit called with status = " + status);
                 if (status != TextToSpeech.ERROR) {
                     t.setLanguage(Locale.FRENCH);
                 }

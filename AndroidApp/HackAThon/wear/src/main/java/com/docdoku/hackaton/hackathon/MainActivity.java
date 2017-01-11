@@ -26,9 +26,10 @@ public class MainActivity extends Activity {
     private Button buttonCommand;
 
     private TextView speechCommand;
+    private Button button;
     private Socket mSocket;
     private boolean isPolite = false;
-    private TTS textToSpeech;
+    //private TTS textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +46,34 @@ public class MainActivity extends Activity {
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
-                textToSpeech = new TTS(getApplicationContext());
+                //textToSpeech = new TTS(getApplicationContext());
+                button = (Button) stub.findViewById(R.id.button);
+                /*button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        textToSpeech.say("Salut mes petites beautés !");
+                    }
+                });*/
                 speechCommand = (TextView) stub.findViewById(R.id.speechTextView);
             }
         });
     }
 
-    private void sendServerResponse(String msg) {
+    private void sendRequest(Args command) {
         Context context = getApplicationContext();
         int duration = Toast.LENGTH_SHORT;
-        textToSpeech.say(msg);
-        Toast toast = Toast.makeText(context, msg, duration);
+
+        try {
+            mSocket.emit("command", command.toJson());
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Can't send event :" + command.getCommand());
+        }
+    }
+
+    private void showResponse(String respnse) {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(context, respnse, duration);
         toast.show();
     }
 
@@ -93,22 +111,23 @@ public class MainActivity extends Activity {
             String spokenText = results.get(0);
 
             if (!isPolite && spokenText.contains("ok ma gueule")) {
-                sendServerResponse("Salut ma gueule, que puis-je faire pour toi aujourd'hui ?");
+                showResponse("Salut ma gueule, que puis-je faire pour toi aujourd'hui ?");
                 isPolite = true;
                 displaySpeechRecognizer();
                 return;
             }
             if (!isPolite) {
-                sendServerResponse("Et bah alors on est pas poli ma gueule ?!");
+                showResponse("Et bah alors on est pas poli ma gueule ?!");
                 displaySpeechRecognizer();
                 return;
             }
-            if (spokenText.contains("mettre à jour mon projet")) {
-                sendServerResponse("Git pull lancé");
-                displaySpeechRecognizer();
-                return;
+
+            Args command = AvailableCommand.foundCommand(spokenText);
+            if (command != null) {
+                sendRequest(command);
+            } else {
+                showResponse("J'ai rien compris ma gueule !");
             }
-            sendServerResponse("J'ai rien compris ma gueule !");
             displaySpeechRecognizer();
         }
         super.onActivityResult(requestCode, resultCode, data);
