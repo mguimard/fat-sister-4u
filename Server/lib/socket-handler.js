@@ -23,7 +23,7 @@ function auth_failure(socket, error) {
 }
 
 const authUser = function(socket, auth) {
-    
+
     let id = auth.id;
     let password = auth.password;
 
@@ -45,7 +45,6 @@ const mapSlave = function(socket) {
         let mac = data.mac;
         console.log("Slave connected with mac: " + mac);
         let client = repo.map_slave(mac, socket);
-        socket.emit('command', {command: 'IDE'});
         if(!client) {
             console.info('Client not connected ... nothing to do');
         } else {
@@ -78,5 +77,5 @@ module.exports = {
     mapSlave,
     sendCommand
 };
-    
+
 
