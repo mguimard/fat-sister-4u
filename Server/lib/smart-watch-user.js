@@ -56,7 +56,11 @@ function mapSlave(socket) {
 
         let client = client_for_mac[mac];
         slave_for_client[client] = socket;
-        client.emit('boot', {'status': 'Ok'});
+        if(!client) {
+            console.info('Client not connected ... nothing to do')
+        } else {
+            client.emit('boot', {'status': 'Ok'});
+        }
     });
 
     socket.on('disconnect', () => {
