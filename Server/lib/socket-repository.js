@@ -24,16 +24,12 @@ const get_slave = function(client) {
 };
 
 const get_client_of = function(socket) {
-    let client = Object.keys(slave_for_client).find(client => slave_for_client[client] === socket);
-    if(!client) {
-        let slave_mac = Object.keys(slave_for_mac).find(mac => slave_for_mac[mac] === socket);
-        client = client_for_mac[slave_mac];
-    }
-    return client;
+    return Object.keys(slave_for_client).find(client => slave_for_client[client] === socket);
 };
 
 const map_client = function (mac, client) {
     client_for_mac[mac] = client;
+    // remap slave, if slave was connected at first (manual boot)
     map_slave(mac, slave_for_mac[mac]);
 };
 
