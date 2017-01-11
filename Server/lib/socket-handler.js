@@ -45,7 +45,7 @@ const mapSlave = function(socket) {
         let mac = data.mac;
         console.log("Slave connected with mac: " + mac);
         let client = repo.map_slave(mac, socket);
-        if(!client) {
+        if(client === 'undefined' || client === undefined) {
             console.info('Client not connected ... nothing to do');
         } else {
             client.emit('boot', {'status': 'Ok'});
@@ -56,8 +56,12 @@ const mapSlave = function(socket) {
         console.log('Slave disconnected');
         let client = repo.get_client_of(socket);
         if(client !== undefined && client !== 'undefined' ) {
-            client.emit('shutdown', 'Slave disconnected');
+            try {
+              client.emit('shutdown', 'Slave disconnected');
             client.disconnect();
+            } catch(e) {
+                console.log("could not notify client");
+            }
         }
     });
 };
@@ -66,9 +70,11 @@ const sendCommand = (socket, command) => {
     let slave = repo.get_slave(socket);
 
     if(slave === undefined || slave === 'undefined') {
-        socket.emit('error', 'Could not find slave socket');
+        socket.emit('not_found', 'Could not find slave socket');
     } else {
-        slave.emit('command', command);
+        console.log('sending command: ');
+        console.log(command);
+        slave.emit('command', JSON.parse(command));
     }
 };
 
