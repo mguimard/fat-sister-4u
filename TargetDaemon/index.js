@@ -1,6 +1,11 @@
+'use strict';
+
 var config = require('./config.json');
 var url = config.server_ws_endpoint;
 var commander = require('./commander');
+
+console.log('Available commands');
+console.log(Object.keys(config.commands));
 
 require('getmac').getMac(function (err, macAddress) {
     if (err) {
@@ -35,22 +40,16 @@ var connect = function (macAddress) {
 
 var handleMessage = function (data) {
     // assume message is formatted as described in README
-    if (data.command) {
-
-        var args = null;
-
-        if (data.args) {
-            try {
-                args = JSON.parse(data.args);
-            } catch (e) {
-                console.log('Cannot parse arguments payload, wont use any arguments');
-            }
-        }
-
-        commander.run(data.command, args);
+    if (data.command && typeof data.command === 'string') {
+        commander.run(data);
     }
 };
 
 // Uncomment for testing
-//handleMessage({command: 'IDE', args: ''});
-//handleMessage({command: 'HALT', args: ''});
+
+// Direct commands
+//handleMessage({command: 'IDE'});
+
+// Shortcuts
+//handleMessage({command: 'SLACK'});
+//handleMessage({command: 'WORK'});

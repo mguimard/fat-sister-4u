@@ -2,6 +2,19 @@
   "server_ws_endpoint": "http://192.168.1.15:9000",
   "commands": {
     "IDE": "subl",
-    "HALT": "/sbin/shutdown"
+    "WEB": "/usr/bin/google-chrome",
+    "TERMINAL": "/usr/bin/x-terminal-emulator",
+    "HALT": "/sbin/shutdown",
+    "REBOOT": "/sbin/shutdown -r"
+  },
+  "shortcuts": {
+    "WORK": {
+      "TERMINAL": "~",
+      "WEB": "https://mail.google.com/mail/u/0/#inbox",
+      "IDE": ""
+    },
+    "SLACK": {
+      "WEB": "http://9gag.com/"
+    }
   }
 }
