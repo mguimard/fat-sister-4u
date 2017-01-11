@@ -15,14 +15,4 @@
         android:layout_below="@+id/launchCommandButton"
         android:layout_alignStart="@+id/launchCommandButton" />
 
-    <Button
-        android:text="Nothing Here"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/launchCommandButton"
-        android:fontFamily="monospace"
-        android:textSize="8sp"
-        android:layout_marginTop="16dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
 </RelativeLayout>

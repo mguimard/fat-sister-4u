@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,8 @@ public class MainActivity extends Activity {
 
     private TextView speechCommand;
     private Socket mSocket;
+    private boolean isPolite = false;
+    private TTS textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,23 +45,17 @@ public class MainActivity extends Activity {
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
+                textToSpeech = new TTS(getApplicationContext());
                 speechCommand = (TextView) stub.findViewById(R.id.speechTextView);
-                buttonCommand = (Button) stub.findViewById(R.id.launchCommandButton);
-                buttonCommand.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        // Perform action on click
-                        onClickEvent();
-                    }
-                });
             }
         });
     }
 
-    private void onClickEvent() {
+    private void sendServerResponse(String msg) {
         Context context = getApplicationContext();
-        CharSequence text = "Send auth";
         int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(context, text, duration);
+        textToSpeech.say(msg);
+        Toast toast = Toast.makeText(context, msg, duration);
         toast.show();
     }
 
@@ -94,8 +91,25 @@ public class MainActivity extends Activity {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
-            speechCommand.setText(spokenText);
-            // Do something with spokenText
+
+            if (!isPolite && spokenText.contains("ok ma gueule")) {
+                sendServerResponse("Salut ma gueule, que puis-je faire pour toi aujourd'hui ?");
+                isPolite = true;
+                displaySpeechRecognizer();
+                return;
+            }
+            if (!isPolite) {
+                sendServerResponse("Et bah alors on est pas poli ma gueule ?!");
+                displaySpeechRecognizer();
+                return;
+            }
+            if (spokenText.contains("mettre à jour mon projet")) {
+                sendServerResponse("Git pull lancé");
+                displaySpeechRecognizer();
+                return;
+            }
+            sendServerResponse("J'ai rien compris ma gueule !");
+            displaySpeechRecognizer();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
