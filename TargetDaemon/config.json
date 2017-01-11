@@ -1,5 +1,6 @@
 {
   "server_ws_endpoint": "http://192.168.1.15:9000",
+  "notify": "/usr/bin/notify-send",
   "commands": {
     "IDE": "DISPLAY=:0 /usr/bin/gedit",
     "WEB": "DISPLAY=:0 /usr/bin/google-chrome",

@@ -22,6 +22,7 @@ const runShortcut = function (shortcut) {
 };
 
 module.exports = {
+
     run: function (commandData) {
         var commandLine = getCommandLine(commandData.command);
 
@@ -37,5 +38,10 @@ module.exports = {
 
         console.log('Unrecognized command key : ' + commandKey);
         return -1;
+    },
+
+    notify: function (title, text) {
+        let cl = config.notify;
+        return exec(cl + ' "' + title + '" "' + text + '" ');
     }
 };

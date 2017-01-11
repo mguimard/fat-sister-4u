@@ -1,4 +1,4 @@
-    'use strict';
+'use strict';
 
 const config = require('./config.json');
 const url = config.server_ws_endpoint;
@@ -19,16 +19,20 @@ const connect = function (macAddress) {
     console.log('Available commands');
     console.log(Object.keys(config.commands));
 
+    commander.notify('SmartWatch', 'Connexion en cours');
+
     var socket = require('socket.io-client')(url);
 
     socket.on('connect', function () {
         console.log('Connected to server');
+        commander.notify('SmartWatch', 'Connecté au serveur');
         socket.emit('auth', {mac: macAddress});
     });
 
     socket.on('command', handleMessage);
 
     socket.on('disconnect', function () {
+        commander.notify('SmartWatch', 'Déconnecté du serveur');
         console.log('Disconnected from server');
     });
 
@@ -42,6 +46,7 @@ const handleMessage = function (data) {
         commander.run(data);
     }
 };
+
 
 // Uncomment for testing
 
