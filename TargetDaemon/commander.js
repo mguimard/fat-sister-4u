@@ -11,6 +11,8 @@ module.exports = {
             return -1;
         }
 
-        exec(commandLine);
+        exec(commandLine, function(error, stdout, stderr) {
+            console.log(stdout);
+        });
     }
 };
