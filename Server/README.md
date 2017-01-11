@@ -13,4 +13,9 @@ Two listening port:
 The client to first connect, must send an auth message. On success the corresponding computer will be started.
 On failure, the socket will be disconnected
 
-## Message handling
+## Bus Handling name:
+
+'boot': message to inform the client if the slave was boot
+'command': message to send a command to the slave
+'shutdown': message send to the client to inform that the slave was disconnected ... immidiately followed by a disconnect
+

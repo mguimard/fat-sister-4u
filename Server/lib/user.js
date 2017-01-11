@@ -52,7 +52,8 @@ const mapSlave = function(socket) {
         console.log("Slave connected with mac: " + mac);
         let client = client_for_mac[mac];
         slave_for_client[client] = socket;
-        client.emit('boot', {'status': 'Ok'});
+        //client.emit('boot', {'status': 'Ok'});
+        socket.emit('event', {command: 'IDE', args: "['ls', '/home']"})
     });
 
     socket.on('disconnect', function() {
@@ -68,7 +69,7 @@ const sendCommand = function(socket, command) {
     if(!slave) {
         socket.emit('error', 'Could not find slave socket');
     } else {
-        slave.emit('event', command);
+        slave.emit('command', command);
     }
 };
 
