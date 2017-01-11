@@ -21,7 +21,7 @@ var connect = function (macAddress) {
         console.log('connected');
     });
 
-    socket.on('event', function (data) {
+    socket.on('command', function (data) {
         console.log('event');
         console.log(data);
         handleMessage(data);
