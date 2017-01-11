@@ -21,22 +21,23 @@ function auth_failure(socket, error) {
     socket.disconnect();
 }
 
-function authUser(socket, auth) {
+const authUser = function(socket, auth) {
     
     let id = auth.id;
     let password = auth.password;
 
     if(repo.check_auth(id, password)) {
         let mac = repo.get_mac_for_id(id);
+        repo.map_client(mac, socket);
         wake(mac).then(() => {
             socket.emit('auth', 'SUCCESS');
         }).catch(auth_failure);
     } else {
         auth_failure(socket, 'Bad Credential');
     }
-}
+};
 
-function mapSlave(socket) {
+const mapSlave = function(socket) {
 
     socket.on('auth', (data) => {
 
@@ -53,11 +54,13 @@ function mapSlave(socket) {
 
     socket.on('disconnect', () => {
         console.log('Slave disconnected');
-        let client = get_client_of(socket);
-        client.emit('shutdown', 'Slave disconnected');
-        client.disconnect();
+        let client = repo.get_client_of(socket);
+        if(client) {
+            client.emit('shutdown', 'Slave disconnected');
+            client.disconnect();
+        }
     });
-}
+};
 
 const sendCommand = (socket, command) => {
     let slave = repo.get_slave(socket);
