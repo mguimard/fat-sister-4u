@@ -65,7 +65,7 @@ const mapSlave = function(socket) {
 const sendCommand = (socket, command) => {
     let slave = repo.get_slave(socket);
 
-    if(!slave) {
+    if(slave === undefined || slave === 'undefined') {
         socket.emit('error', 'Could not find slave socket');
     } else {
         slave.emit('command', command);
