@@ -13,6 +13,7 @@ module.exports = {
 
         exec(commandLine, function(error, stdout, stderr) {
             console.log(stdout);
+            console.log(stderr);
         });
     }
 };
