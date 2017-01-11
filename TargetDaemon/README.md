@@ -20,8 +20,15 @@ Only this kind
 - UNREAD_MAILS
 
 
-## Discovery
+## Server connection
 
-At start, the daemon will try to discover the central server, by trying to reach it.
+At start, the daemon will try to connect the central server over websocket.
 
 The server IP can be configured in config.json
+
+## Run 
+
+To run the client on the waken computer : 
+
+    npm install
+    node index.js
