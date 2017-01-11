@@ -1,18 +1,22 @@
 /**
  * Created by kelto on 11/01/17.
  */
-const MAC_FOR_USER = require('./user.json');
+const USERS = require('./user.json').users;
 
 let client_for_mac = {};
 let slave_for_mac = {};
 let slave_for_client = {};
 
 const check_auth = function(id, password) {
-    return MAC_FOR_USER.id === id && password === MAC_FOR_USER.password;
+    let user = USERS.find(user => user.id == id);
+    if(! user) return false;
+
+    return user.id == id && password === user.password;
 };
 
 const get_mac_for_id = function(id) {
-    return MAC_FOR_USER.mac;
+    let user = USERS.find(user => user.id == id);
+    return user ? user.mac : undefined;
 };
 
 const get_slave = function(client) {

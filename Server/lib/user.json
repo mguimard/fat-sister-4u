@@ -1,5 +1,14 @@
 {
-  "id": 1,
-  "password": "password",
-  "mac": "ec:a8:6b:fe:9c:ab"
+  "users": [
+    {
+      "id": 1,
+      "password": "password",
+      "mac": "ec:a8:6b:fe:9c:ab"
+    },
+    {
+      "id": 2,
+      "password": "password",
+      "mac": "ec:a8:6b:fe:9c:ab"
+    }
+  ]
 }
