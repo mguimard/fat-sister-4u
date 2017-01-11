@@ -10,7 +10,7 @@ import java.util.Map;
 public class AvailableCommand {
 
     private final String GIT_PULL_PROJECT = "mettre à jour mon projet";
-    private final String GIT_PULL_PROJECT_KEYWORD = "pull";
+    private final String GIT_PULL_PROJECT_KEYWORD = "PULL_REPO";
 
     private final String LAUNCH_IDE = "lancer mon environnement de développement";
     private final String LAUNCH_IDE_KEYWORD = "IDE";
@@ -21,8 +21,8 @@ public class AvailableCommand {
     private final String LAUNCH_SHELL = "lancer mon terminal";
     private final String LAUNCH_SHELL_KEWORD = "TERMINAL";
 
-    private final String SHUTDOWN_COMPUTER = "eteindre mon ordniateur";
-    private final String SHUTDOWN_COMPUTER_KEYWORD = "ALT";
+    private final String SHUTDOWN_COMPUTER = "eteindre mon ordinateur";
+    private final String SHUTDOWN_COMPUTER_KEYWORD = "HALT";
 
     private final String RESTART_COMPUTER = "redémarrer mon ordinateur";
     private final String RESTART_COMPUTER_KEYWORD = "REBOOT";
