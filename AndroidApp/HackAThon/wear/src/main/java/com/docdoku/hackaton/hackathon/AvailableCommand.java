@@ -27,7 +27,7 @@ public class AvailableCommand {
     private final String RESTART_COMPUTER = "redémarrer mon ordinateur";
     private final String RESTART_COMPUTER_KEYWORD = "REBOOT";
 
-    private static Map<String, Args> commands;
+    private Map<String, Args> commands;
 
     public AvailableCommand() {
         commands = new HashMap<String, Args>();
@@ -40,7 +40,7 @@ public class AvailableCommand {
         commands.put(RESTART_COMPUTER, new Args(RESTART_COMPUTER_KEYWORD));
     }
 
-    public static Args foundCommand(String text) {
+    public Args foundCommand(String text) {
 
         for (String command : commands.keySet()) {
 

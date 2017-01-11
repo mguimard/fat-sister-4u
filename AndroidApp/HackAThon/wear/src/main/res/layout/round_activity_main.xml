@@ -1,26 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context="com.docdoku.hackaton.hackathon.MainActivity"
     tools:deviceIds="wear_round">
 
-    <TextView
-        android:id="@+id/speechTextView"
-        android:textAppearance="@style/TextAppearance.WearDiag"
-        android:layout_marginTop="16dp"
+    <Button
+        android:text="IDE"
         android:layout_width="wrap_content"
+        android:id="@+id/buttonIde"
+        android:textSize="8sp"
+        android:fontFamily="monospace"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/launchCommandButton"
-        android:layout_alignStart="@+id/launchCommandButton" />
+        android:layout_below="@+id/buttonWeb"
+        android:layout_alignStart="@+id/buttonTerminal" />
 
     <Button
-        android:text="Button"
+        android:text="Slack"
         android:layout_width="wrap_content"
+        android:id="@+id/buttonSlack"
+        android:textSize="8sp"
+        android:fontFamily="monospace"
         android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:layout_below="@+id/speechTextView"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/buttonIde"
+        android:layout_alignStart="@+id/buttonIde" />
+
+    <Button
+        android:text="WORK"
+        android:layout_width="wrap_content"
+        android:id="@+id/buttonWork"
+        android:textSize="8sp"
+        android:fontFamily="monospace"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/buttonPull"
+        android:layout_alignBottom="@+id/buttonSlack" />
+
+    <Button
+        android:text="PULL"
+        android:layout_width="wrap_content"
+        android:id="@+id/buttonPull"
+        android:textSize="8sp"
+        android:fontFamily="monospace"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonWeb"
+        android:layout_alignStart="@+id/buttonWeb" />
+
+    <Button
+        android:text="WEB"
+        android:layout_width="wrap_content"
+        android:id="@+id/buttonWeb"
+        android:textSize="8sp"
+        android:fontFamily="monospace"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonOff"
+        android:layout_alignStart="@+id/buttonOff" />
+
+    <Button
+        android:text="TERMINAL"
+        android:layout_width="wrap_content"
+        android:id="@+id/buttonTerminal"
+        android:textSize="8sp"
+        android:fontFamily="monospace"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonIde"
+        android:layout_alignStart="@+id/buttonReboot" />
+
+    <Button
+        android:text="REBOOT"
+        android:layout_width="wrap_content"
+        android:id="@+id/buttonReboot"
+        android:textSize="8sp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="monospace"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonTerminal"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="OFF"
+        android:layout_width="wrap_content"
+        android:id="@+id/buttonOff"
+        android:layout_marginTop="14dp"
+        android:textSize="8sp"
+        android:fontFamily="monospace"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/buttonTerminal" />
 
 </RelativeLayout>

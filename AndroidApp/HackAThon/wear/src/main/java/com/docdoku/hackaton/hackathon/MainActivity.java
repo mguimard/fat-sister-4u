@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.speech.tts.TextToSpeech;
 import android.support.wearable.view.WatchViewStub;
 import android.view.View;
 import android.widget.Button;
@@ -22,13 +21,29 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 public class MainActivity extends Activity {
-
+    private final String GIT_PULL_PROJECT_KEYWORD = "PULL_REPO";
+    private final String LAUNCH_IDE_KEYWORD = "IDE";
+    private final String LAUNCH_CHROME_KEYWORD = "WEB";
+    private final String LAUNCH_SHELL_KEWORD = "TERMINAL";
+    private final String SHUTDOWN_COMPUTER_KEYWORD = "HALT";
+    private final String RESTART_COMPUTER_KEYWORD = "REBOOT";
+    private final String WORK_KEYWORD = "WORK";
+    private final String SLACK_KEYWORD = "SLACK";
     private Button buttonCommand;
 
     private TextView speechCommand;
-    private Button button;
+    private Button buttonTerminal;
+    private Button buttonOff;
+    private Button buttonReboot;
+    private Button buttonWeb;
+    private Button buttonIde;
+    private Button buttonPull;
+    private Button buttonWork;
+    private Button buttonSlack;
+
     private Socket mSocket;
     private boolean isPolite = false;
+    private AvailableCommand availableCommand;
     //private TTS textToSpeech;
 
     @Override
@@ -40,20 +55,73 @@ public class MainActivity extends Activity {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        displaySpeechRecognizer();
+        availableCommand = new AvailableCommand();
+        //displaySpeechRecognizer();
         setContentView(R.layout.activity_main);
         final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
                 //textToSpeech = new TTS(getApplicationContext());
-                button = (Button) stub.findViewById(R.id.button);
-                /*button.setOnClickListener(new View.OnClickListener() {
+                buttonTerminal = (Button) stub.findViewById(R.id.buttonTerminal);
+                buttonIde = (Button) stub.findViewById(R.id.buttonIde);
+                buttonOff = (Button) stub.findViewById(R.id.buttonOff);
+                buttonPull = (Button) stub.findViewById(R.id.buttonPull);
+                buttonReboot = (Button) stub.findViewById(R.id.buttonReboot);
+                buttonWeb = (Button) stub.findViewById(R.id.buttonWeb);
+                buttonWork = (Button) stub.findViewById(R.id.buttonWork);
+                buttonSlack = (Button) stub.findViewById(R.id.buttonSlack);
+
+
+                buttonTerminal.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        textToSpeech.say("Salut mes petites beautés !");
+                        Args args = new Args(LAUNCH_SHELL_KEWORD);
+                        sendRequest(args);
                     }
-                });*/
-                speechCommand = (TextView) stub.findViewById(R.id.speechTextView);
+                });
+                buttonIde.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Args args = new Args(LAUNCH_IDE_KEYWORD);
+                        sendRequest(args);
+                    }
+                });
+                buttonOff.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Args args = new Args(SHUTDOWN_COMPUTER_KEYWORD);
+                        sendRequest(args);
+                    }
+                });
+                buttonPull.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Args args = new Args(GIT_PULL_PROJECT_KEYWORD);
+                        sendRequest(args);
+                    }
+                });
+                buttonReboot.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Args args = new Args(RESTART_COMPUTER_KEYWORD);
+                        sendRequest(args);
+                    }
+                });
+                buttonWeb.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Args args = new Args(LAUNCH_CHROME_KEYWORD);
+                        sendRequest(args);
+                    }
+                });
+
+                buttonWork.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Args args = new Args(WORK_KEYWORD);
+                        sendRequest(args);
+                    }
+                });
+                buttonSlack.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        Args args = new Args(SLACK_KEYWORD);
+                        sendRequest(args);
+                    }
+                });
             }
         });
     }
@@ -122,7 +190,7 @@ public class MainActivity extends Activity {
                 return;
             }
 
-            Args command = AvailableCommand.foundCommand(spokenText);
+            Args command = availableCommand.foundCommand(spokenText);
             if (command != null) {
                 sendRequest(command);
             } else {
