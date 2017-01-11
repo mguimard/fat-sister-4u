@@ -1,6 +1,6 @@
 let { createServer } = require('http');
 let socketio = require('socket.io');
-let user = require('./lib/smart-watch-user.js');
+let user = require('../lib/socket-handler.js');
 
 function listen() {
 

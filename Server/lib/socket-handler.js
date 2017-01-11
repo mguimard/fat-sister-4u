@@ -2,18 +2,7 @@
  * Created by kelto on 11/01/17.
  */
 let wol = require('node-wol');
-const MAC_FOR_USER = require('./user.json');
-
-let client_for_mac = {};
-let slave_for_client = {};
-
-function check_auth(id, password) {
-    return MAC_FOR_USER.id === id && password === MAC_FOR_USER.password;
-}
-
-function get_mac_for_id(id) {
-    return MAC_FOR_USER.mac;
-}
+let repo = require('./socket-repository');
 
 function wake(mac) {
     return new Promise((resolve, reject) => {
@@ -27,7 +16,7 @@ function wake(mac) {
     });
 }
 
-function disconnect(socket, error) {
+function auth_failure(socket, error) {
     socket.emit('auth', error);
     socket.disconnect();
 }
@@ -37,13 +26,13 @@ function authUser(socket, auth) {
     let id = auth.id;
     let password = auth.password;
 
-    if(check_auth(id, password)) {
-        let mac = get_mac_for_id(id);
+    if(repo.check_auth(id, password)) {
+        let mac = repo.get_mac_for_id(id);
         wake(mac).then(() => {
             socket.emit('auth', 'SUCCESS');
-        }).catch(disconnect);
+        }).catch(auth_failure);
     } else {
-        disconnect(socket, 'Bad Credential');
+        auth_failure(socket, 'Bad Credential');
     }
 }
 
@@ -54,8 +43,7 @@ function mapSlave(socket) {
         let mac = data.mac;
         console.log("Slave connected with mac: " + mac);
 
-        let client = client_for_mac[mac];
-        slave_for_client[client] = socket;
+        let client = repo.map_slave(mac, socket);
         if(!client) {
             console.info('Client not connected ... nothing to do')
         } else {
@@ -65,14 +53,14 @@ function mapSlave(socket) {
 
     socket.on('disconnect', () => {
         console.log('Slave disconnected');
-        let client = client_for_mac[socket];
+        let client = get_client_of(socket);
         client.emit('shutdown', 'Slave disconnected');
         client.disconnect();
     });
 }
 
 const sendCommand = (socket, command) => {
-    let slave = slave_for_client[socket];
+    let slave = repo.get_slave(socket);
 
     if(!slave) {
         socket.emit('error', 'Could not find slave socket');
